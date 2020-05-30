@@ -3,6 +3,13 @@ class Point {
         this.x = x;
         this.y = y;
     }
+
+    show(context, color) {
+        context.fillStyle = color;
+        const circle = new Path2D();
+        circle.arc(this.x, this.y, 2, 0, 2 * Math.PI);
+        context.fill(circle);
+    }
 }
 
 class Rectangle {
@@ -16,6 +23,22 @@ class Rectangle {
     contains(point) {
         return point.x >= this.x - this.w && point.x <= this.x + this.w &&
                point.y >= this.y - this.h && point.y <= this.y + this.h;
+    }
+
+    intersects(range) {
+        return !(
+            range.x - range.w > this.x + this.w ||
+            range.x + range.w < this.x - this.w ||
+            range.y - range.h > this.y + this.h ||
+            range.y + range.h < this.y - this.h
+        ); 
+    }
+
+    show(context, color) {
+        context.strokeStyle = color;
+        const rectangle = new Path2D();
+        rectangle.rect(this.x - this.w, this.y - this.h, this.w * 2, this.h * 2);
+        context.stroke(rectangle);
     }
 }
 
@@ -45,6 +68,22 @@ class QuadTree {
         }
     }
 
+    query(range, found) {
+        if(this.boundary.intersects(range)) {
+            for(const p of this.points) {
+                if(range.contains(p))
+                    found.push(p);
+            }
+
+            if(this.divided) {
+                this.northeast.query(range, found);
+                this.northwest.query(range, found);
+                this.southeast.query(range, found);
+                this.southwest.query(range, found);
+            }
+        }
+    }
+
     subdivided(){
         const x = this.boundary.x;
         const y = this.boundary.y;
@@ -65,17 +104,10 @@ class QuadTree {
     }
 
     show(context){
-        context.strokeStyle = '#FFFFFF';
-        const rectangle = new Path2D();
-        rectangle.rect(this.boundary.x - this.boundary.w, this.boundary.y - this.boundary.h, this.boundary.w * 2, this.boundary.h * 2);
-        context.stroke(rectangle);
+        this.boundary.show(context, '#FFF');
 
-        context.fillStyle = '#FFF';
-        for(const p of this.points){
-            const circle = new Path2D();
-            circle.arc(p.x, p.y, 2, 0, 2 * Math.PI);
-            context.fill(circle);
-        }
+        for(const p of this.points)
+            p.show(context, '#FFF');
 
         if(this.divided){
             this.northwest.show(context);
