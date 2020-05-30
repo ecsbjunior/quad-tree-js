@@ -1,0 +1,6 @@
+#screen {
+    image-rendering: pixelated;
+    height: 800px;
+    width: 800px;
+    box-shadow: 1px 1px 5px rgba(36, 36, 36, 0.747);
+}
