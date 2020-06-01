@@ -1,0 +1,35 @@
+body {
+    background-color: #1a1a1a;
+    height: 100vh;
+}
+
+.container {
+    max-width: 85vw;
+}
+
+.col-6 {
+    max-width: 100%!important;
+    flex: 0 0 100%!important;
+}
+
+.jumbotron {
+    color: white;
+    backdrop-filter: blur(8px);
+    background-color: #0f0f0f;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.507);
+    margin-bottom: 0px;
+}
+
+.display-4 {
+    margin-bottom: 40px;
+}
+
+#screen {
+    border: 1px solid #CCC;
+    image-rendering: pixelated;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
